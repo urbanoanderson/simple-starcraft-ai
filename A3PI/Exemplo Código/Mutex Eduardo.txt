@@ -1,0 +1,22 @@
+CRITICAL_SECTION buildQueue_mutex;
+std::queue<BWAPI::UnitType> buildQueue;
+std::queue<Unidade*> rebuildQueue;
+ 
+std::stack<BWAPI::UnitType> buildOrder;
+ 
+bool addToBuildQueue(BWAPI::UnitType building)
+{
+        bool ret = false;
+       
+        EnterCriticalSection(&buildQueue_mutex);
+ 
+        if(buildQueue.empty())
+        {
+                buildQueue.push(building);
+                ret = true;
+        }
+ 
+        LeaveCriticalSection(&buildQueue_mutex);
+ 
+        return ret;
+}
